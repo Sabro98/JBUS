@@ -1,0 +1,4 @@
+Assets/Font/ filter=lfs diff=lfs merge=lfs -text
+Assets/Photon filter=lfs diff=lfs merge=lfs -text
+Assets/Supercyan[[:space:]]Character[[:space:]]Pack[[:space:]]Free[[:space:]]Sample filter=lfs diff=lfs merge=lfs -text
+Library filter=lfs diff=lfs merge=lfs -text
