@@ -9,14 +9,28 @@ using System;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_InputField createInput;
-    [SerializeField] TMP_InputField joinInput;
+    [SerializeField] TMP_InputField IDInput;
+
+    public string playerID;
 
     const string ROOM_NAME = "JBNU";
-    const string GAME_SCENE = "GAME";
+    const string LOGIN_SCENE = "EnterToGame";
+
+    private void Awake()
+    {
+        playerID = "";
+    }
+
+    private void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     public void JoinRoom()
     {
+        playerID = IDInput.text;
+        if (string.IsNullOrEmpty(playerID)) return;
+
         PhotonNetwork.JoinRoom(ROOM_NAME);    
     }
 
@@ -27,6 +41,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel(GAME_SCENE);
+        PhotonNetwork.LoadLevel(LOGIN_SCENE);
     }
 }
