@@ -14,7 +14,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public string playerID;
 
     const string ROOM_NAME = "JBNU";
-    const string LOGIN_SCENE = "EnterToGame";
+    const string GAME_SENCE = "Game";
 
     private void Awake()
     {
@@ -41,6 +41,6 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel(LOGIN_SCENE);
+        PhotonNetwork.LoadLevel(GAME_SENCE);
     }
 }

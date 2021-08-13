@@ -9,16 +9,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
     [SerializeField] GameObject cameraHolder, chatBubble;
 
+    const string walkAnim = "isWalk";
+    const string jumpUpAnim = "isJumpUp";
+    const string jumpingAnim = "isJumping";
+    const string UPDATE_CHAT_BUBBLE = "UpdateChatBubble_RPC";
+
+    const int damp = 5; // chat bubble's damp
+
+
     UIManager uiManager;
 
     GameObject chatInputObject;
     TMP_InputField chatField;
-
-    const string walkAnim = "isWalk";
-    const string jumpUpAnim = "isJumpUp";
-    const string jumpingAnim = "isJumping";
-
-    const string UPDATE_CHAT_BUBBLE = "UpdateChatBubble_RPC";
 
     float verticalLookRotation;
     float chatBubbleTime;
@@ -35,14 +37,12 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     PhotonView PV;
 
-    int damp = 5; // chat bubble's damp
-
-
     void Awake()
-    { 
+    {
         PV = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
 
         //UIManager 초기화
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isChatting)
             {
+                string playerID = this.GetComponent<PlayerInfo>().GetPlayerID();
                 string msg = chatField.text;
 
                 if(msg != "")
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
                     //다른 세계의 자신에게도 채팅을 띄우도록
                     PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, msg);
 
-                    uiManager.PropagateChat(msg);
+                    uiManager.DisplayChat(playerID + " : " + msg);
                     chatField.text = "";
                 }
 
