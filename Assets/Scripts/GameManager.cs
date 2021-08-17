@@ -25,13 +25,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         SpawnPlayer(playerName);
     }
 
-
     void SpawnPlayer(string playerID)
     {
         Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
         var player = PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
         player.GetComponent<PlayerInfo>().SetPlayerID(playerID);
     }
-
-
 }

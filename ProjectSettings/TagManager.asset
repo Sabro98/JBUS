@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - ChatContainer
   - chatBubble
+  - playerID
   layers:
   - Default
   - TransparentFX

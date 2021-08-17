@@ -7,23 +7,18 @@ using TMPro;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
-    [SerializeField] GameObject cameraHolder, chatBubble;
+    [SerializeField] GameObject cameraHolder;
 
     const string walkAnim = "isWalk";
     const string jumpUpAnim = "isJumpUp";
     const string jumpingAnim = "isJumping";
-    const string UPDATE_CHAT_BUBBLE = "UpdateChatBubble_RPC";
 
-    const int damp = 5; // chat bubble's damp
-
-
-    UIManager uiManager;
 
     GameObject chatInputObject;
     TMP_InputField chatField;
+    PlayerInfo playerInfo;
 
     float verticalLookRotation;
-    float chatBubbleTime;
 
     bool grounded;
     bool jumpUp;
@@ -42,10 +37,6 @@ public class PlayerController : MonoBehaviour
         PV = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
-
-        //UIManager 초기화
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
     void Start()
@@ -59,6 +50,9 @@ public class PlayerController : MonoBehaviour
         {
             //커서 화면에 가두기
             Cursor.lockState = CursorLockMode.Locked;
+
+            //playerInfo 초기화
+            playerInfo = GetComponent<PlayerInfo>();
 
             //채팅 박스 초기화
             chatInputObject = GameObject.Find("Canvas/ChatBubble");
@@ -76,23 +70,6 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
-
-        //rotate other player's chat bubbles look to current player
-        //reference: https://answers.unity.com/questions/22130/how-do-i-make-an-object-always-face-the-player.html
-        GameObject[] chatBubbles = GameObject.FindGameObjectsWithTag("chatBubble");
-        Transform targetPosition = cameraHolder.transform;
-
-        foreach (GameObject otherChatBubble in chatBubbles)
-        {
-            if (otherChatBubble == chatBubble) continue;
-            var rotationAngle = Quaternion.LookRotation(( targetPosition.position - otherChatBubble.transform.position).normalized); // we get the angle has to be rotated
-            Vector3 angle = rotationAngle.eulerAngles;
-            angle.x = 0;
-            angle.z = 0;
-            rotationAngle = Quaternion.Euler(angle);
-            rotationAngle *= Quaternion.Euler(0, 180, 0);
-            otherChatBubble.transform.rotation = Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp); // we rotate the rotationAngle 
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -115,16 +92,11 @@ public class PlayerController : MonoBehaviour
         {
             if (isChatting)
             {
-                string playerID = this.GetComponent<PlayerInfo>().GetPlayerID();
                 string msg = chatField.text;
 
                 if(msg != "")
                 {
-                    chatBubbleTime = 3f;
-                    //다른 세계의 자신에게도 채팅을 띄우도록
-                    PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, msg);
-
-                    uiManager.DisplayChat(playerID + " : " + msg);
+                    playerInfo.Chat(msg);
                     chatField.text = "";
                 }
 
@@ -156,23 +128,6 @@ public class PlayerController : MonoBehaviour
                 isChatting = false;
             }
         }
-
-        UpdateChatBubbleTime();
-    }
-
-    void UpdateChatBubbleTime()
-    {
-        if (chatBubbleTime <= 0f) return;
-
-        chatBubbleTime -= Time.deltaTime;
-        if (chatBubbleTime <= 0f)
-            PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, "");
-    }
-
-    [PunRPC]
-    void UpdateChatBubble_RPC(string msg)
-    {
-        chatBubble.GetComponentInChildren<TMP_Text>().text = msg;
     }
 
     void Move()
