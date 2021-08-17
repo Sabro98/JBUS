@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
     }
 
     //params -> (msg)
-    public void PropagateChat(string msg)
+    public void DisplayChat(string msg)
     {
         PV.RPC(DISPLAY_CHAT, RpcTarget.All, msg);
     }

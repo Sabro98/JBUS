@@ -5,40 +5,33 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    const string LOGIN_SCENE = "EnterToGame";
+    const string LOGIN_OBJECT_NAME = "CreateAndJoinRooms";
 
     [SerializeField] GameObject playerPrefab;
 
-
-    LoginManager loginScript;
+    CreateAndJoinRooms lobbyScript;
 
     public float spawnX;
     public float spawnZ;
 
-    private void Awake()
+    void Start()
     {
-        var loginScene = GameObject.Find(LOGIN_SCENE);
-        loginScript = loginScene.GetComponent<LoginManager>();
-        SpawnPlayer();
+        //init playerId
+        var lobbyObject = GameObject.Find(LOGIN_OBJECT_NAME);
+        lobbyScript = lobbyObject.GetComponent<CreateAndJoinRooms>();
+        string playerName = lobbyScript.playerID;
+        Destroy(lobbyObject.gameObject);
+        
+        SpawnPlayer(playerName);
     }
 
 
-    void SpawnPlayer()
+    void SpawnPlayer(string playerID)
     {
         Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
         var player = PhotonNetwork.Instantiate(playerPrefab.name, randomPosition, Quaternion.identity);
-        print(player);
+        player.GetComponent<PlayerInfo>().SetPlayerID(playerID);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
