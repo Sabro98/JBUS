@@ -3,6 +3,12 @@ Photon Realtime C# Client - Changelog
 Exit Games GmbH - www.photonengine.com - forum.photonengine.com
 
 
+Version 4.1.6.4 (26. July 2021)
+    Internal: Added PhotonEditorTools.HasFusion value and added AppSettings.AppIdFusion as well as ClientAppType.Fusion.
+    Added: ConnectionHandler.DisconnectAfterKeepAlive to let the fallback thread call Disconnect after the KeepAliveInBackground time. Default: false.
+    Changed: ConnectionHandler timer implementation to use a Stopwatch, which is a little more clear about what happens. PUN does not expose this value, so you need to set it in code (change the default).
+    Added: Hashtable specific extension methods StripKeysWithNullValues and StripToStringKeys which allocates less.
+
 Version 4.1.6.3 (06. July 2021)
     Added: Handling of ErrorCode Invalid Operation (-2) for Authenticate requests. This becomes a DisconnectCause = OperationNotAllowedInCurrentState.
 

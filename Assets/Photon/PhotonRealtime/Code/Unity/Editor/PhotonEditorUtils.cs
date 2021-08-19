@@ -46,7 +46,11 @@ namespace Photon.Realtime
         /// <summary>True if the VoiceClient of the Photon Voice API is available. If so, the editor may (e.g.) show additional options in settings.</summary>
         public static bool HasVoice;
 
+        /// <summary>True if PUN is in the project.</summary>
         public static bool HasPun;
+
+        /// <summary>True if Photon Fusion is available in the project (and enabled).</summary>
+        public static bool HasFusion;
 
         /// <summary>True if the PhotonEditorUtils checked the available products / APIs. If so, the editor may (e.g.) show additional options in settings.</summary>
         public static bool HasCheckedProducts;
@@ -56,6 +60,9 @@ namespace Photon.Realtime
             HasVoice = Type.GetType("Photon.Voice.VoiceClient, Assembly-CSharp") != null || Type.GetType("Photon.Voice.VoiceClient, Assembly-CSharp-firstpass") != null || Type.GetType("Photon.Voice.VoiceClient, PhotonVoice.API") != null;
             HasChat = Type.GetType("Photon.Chat.ChatClient, Assembly-CSharp") != null || Type.GetType("Photon.Chat.ChatClient, Assembly-CSharp-firstpass") != null || Type.GetType("Photon.Chat.ChatClient, PhotonChat") != null;
             HasPun = Type.GetType("Photon.Pun.PhotonNetwork, Assembly-CSharp") != null || Type.GetType("Photon.Pun.PhotonNetwork, Assembly-CSharp-firstpass") != null || Type.GetType("Photon.Pun.PhotonNetwork, PhotonUnityNetworking") != null;
+            #if FUSION_WEAVER
+            HasFusion = true;
+            #endif
             PhotonEditorUtils.HasCheckedProducts = true;
 
             if (EditorPrefs.HasKey("DisablePun") && EditorPrefs.GetBool("DisablePun"))

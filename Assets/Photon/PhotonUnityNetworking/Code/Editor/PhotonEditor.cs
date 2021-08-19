@@ -45,7 +45,7 @@ namespace Photon.Pun
         public string PUNWizardLabel = "PUN Wizard";
         public string SettingsButton = "Settings:";
         public string SetupServerCloudLabel = "Setup wizard for setting up your own server or the cloud.";
-        public string WarningPhotonDisconnect = "Disconnecting PUN due to recompile.";
+        public string WarningPhotonDisconnect = "Disconnecting PUN due to recompile. Exit PlayMode.";
         public string StartButton = "Start";
         public string LocateSettingsButton = "Locate PhotonServerSettings";
         public string SettingsHighlightLabel = "Highlights the used photon settings file in the project.";
@@ -188,9 +188,13 @@ namespace Photon.Pun
             EditorApplication.playModeStateChanged -= PlayModeStateChanged;
             EditorApplication.playModeStateChanged += PlayModeStateChanged;
 
+            #if UNITY_2021_1_OR_NEWER
+            CompilationPipeline.compilationStarted -= OnCompileStarted21;
+            CompilationPipeline.compilationStarted += OnCompileStarted21;
+            #else
             CompilationPipeline.assemblyCompilationStarted -= OnCompileStarted;
             CompilationPipeline.assemblyCompilationStarted += OnCompileStarted;
-
+            #endif
 
             #if (UNITY_2018 || UNITY_2018_1_OR_NEWER)
             EditorApplication.projectChanged -= OnProjectChanged;
@@ -245,6 +249,14 @@ namespace Photon.Pun
             }
         }
 
+
+        #if UNITY_2021_1_OR_NEWER
+        private static void OnCompileStarted21(object obj)
+        {
+            OnCompileStarted(obj as string);
+        }
+        #endif
+
         private static void OnCompileStarted(string obj)
         {
             if (PhotonNetwork.IsConnected)
@@ -258,8 +270,12 @@ namespace Photon.Pun
 
                 PhotonNetwork.Disconnect();
                 PhotonNetwork.NetworkingClient.LoadBalancingPeer.DispatchIncomingCommands();
+                #if UNITY_2019_4_OR_NEWER && UNITY_EDITOR
+                EditorApplication.ExitPlaymode();
+                #endif
             }
         }
+
 
         [DidReloadScripts]
         private static void OnDidReloadScripts()

@@ -56,6 +56,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *BuildTest*
-
+*Photon*
+*Supercyan*
 # Crashlytics generated file
 crashlytics-build.properties

@@ -3,6 +3,18 @@ PUN 2 - Changelog
 Exit Games GmbH - www.photonengine.com - forum.photonengine.com
 
 
+v2.34.1 (28. July 2021)
+Updated: PhotonNetwork.PunVersion to "2.34.1" now. The previous version accidentally used "2.33.3" still.
+Updated: For Unity 2021, the obsoltete CompilationPipeline.assemblyCompilationStarted got replaced with CompilationPipeline.compilationStarted.
+
+v2.34 (26. July 2021)
+Changed: The PhotonView.Owner and .Controller for "room PhotonViews" will be changed properly whenever the Master Client switches. Room PhotonViews are identified by IsRoomView (which checks CreatorActorNr == 0).
+Changed: PUN needs to exit play mode in Editor, if there is a recompilation (due to code change, etc) to prevent running into endless NullReferenceExceptions and a flood of other errors. As the connection can't be held up after recompile, this is no big step back. The log will include a hint why the client exited playmode.
+Changed: The PhotonNetwork constructor creates a NetworkingClient (in Editor) to avoid exceptions due to possible recompilation.
+Changed: PhotonNetwork.StaticReset was running as RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad) but will run earlier now, using AfterAssembliesLoaded.
+Updated: Library to 4.1.6.4. More details in changes-library.txt.
+
+
 v2.33.3 (07. July 2021)
 Fixed: Skipping cleanup of PhotonViews if they never had a legit ViewID. This could result in a NullReferenceException (e.g. when exiting play mode).
 Internal: RegisterPhotonView will set view.removedFromLocalViewList to false now. This is an internally used value.
