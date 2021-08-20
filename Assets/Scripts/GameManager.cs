@@ -5,11 +5,11 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    const string LOGIN_OBJECT_NAME = "CreateAndJoinRooms";
+    const string LOGIN_OBJECT_NAME = "LobbyManager";
 
     [SerializeField] GameObject playerPrefab1, playerPrefab2;
 
-    CreateAndJoinRooms lobbyScript;
+    LobbyManager lobbyScript;
 
     public float spawnX;
     public float spawnZ;
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //init playerId
         var lobbyObject = GameObject.Find(LOGIN_OBJECT_NAME);
-        lobbyScript = lobbyObject.GetComponent<CreateAndJoinRooms>();
+        lobbyScript = lobbyObject.GetComponent<LobbyManager>();
         string playerName = lobbyScript.playerID;
         Destroy(lobbyObject.gameObject);
         
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         //basic_rig.transform.parent = playerPrefab.transform;
         //common_people.transform.parent = playerPrefab.transform;
 
-        //랜덤하게 캐릭터 생성 -> 데이터 베이스에서 캐릭터 정보 가져와야할듯 
+        //랜덤하게 캐릭터 생성 -> 데이터 베이스에서 캐릭터 정보 가져와야할L 
         int rand = Random.Range(0, 2);
         GameObject selectedPlayer = (rand % 2 == 1 ? playerPrefab1 : playerPrefab2);
         Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
