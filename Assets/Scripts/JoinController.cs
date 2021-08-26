@@ -2,30 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class JoinController : MonoBehaviour
+public class JoinController : MonoBehaviourPunCallbacks
 {
     public float rotateSpeed = 60f;
 
     [SerializeField] TMP_Dropdown dropdown;
+    [SerializeField] TMP_InputField IDInput;
     [SerializeField] List<GameObject> prefabs;
 
-    const string LOBBY_SCENE = "Lobby";
+    const string GAME_SCENE = "Game";
+    const string ROOM_NAME = "JBNU";
 
-    string currentPrefabName;
+    public string PlayerID { get; set; }
+    public string CurrentPrefabName { get; set; }
     GameObject currentPrefab;
 
 
     private void Awake()
     {
+        //플레이 캐릭터 초기화
         initDropdown();
         initPrefabs();
+
+        //playerID 초기화
+        PlayerID = "";
     }
 
     void initDropdown()
     {
-        currentPrefabName = dropdown.options[dropdown.value].text;
+        CurrentPrefabName = dropdown.options[dropdown.value].text;
         dropdown.onValueChanged.AddListener(delegate
         {
             Function_Dropdown(dropdown);
@@ -35,7 +43,7 @@ public class JoinController : MonoBehaviour
     void initPrefabs()
     {
         currentPrefab = null;
-        changePrefab(currentPrefabName);
+        changePrefab(CurrentPrefabName);
     }
 
     void changePrefab(string text)
@@ -47,7 +55,7 @@ public class JoinController : MonoBehaviour
             {
                 var prevPrefab = currentPrefab;
                 currentPrefab = Instantiate(prefab);
-                currentPrefabName = text;
+                CurrentPrefabName = text;
                 Destroy(prevPrefab);
                 break;
             }
@@ -72,8 +80,22 @@ public class JoinController : MonoBehaviour
         changePrefab(selected);
     }
 
-    public void BackToLobby()
+    public void playGame()
     {
-        SceneManager.LoadScene(LOBBY_SCENE);
+        PlayerID = IDInput.text;
+        if (string.IsNullOrEmpty(PlayerID)) return;
+
+        DontDestroyOnLoad(this.gameObject);
+        PhotonNetwork.JoinRoom(ROOM_NAME);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        PhotonNetwork.CreateRoom(ROOM_NAME);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel(GAME_SCENE);
     }
 }
