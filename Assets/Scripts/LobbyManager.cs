@@ -7,20 +7,27 @@ using TMPro;
 using Photon.Realtime;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_InputField IDInput;
 
-    public string playerID;
+    public string PlayerID { get; set; }
+    public JBUS_Player LoginPlayer { get; set; }
 
     const string ROOM_NAME = "JBNU";
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
+    const string LOGIN_URL = "https://jbus.herokuapp.com/user/login";
+
+    bool LoggedIn;
 
     private void Awake()
     {
-        playerID = "";
+        PlayerID = "";
+        LoginPlayer = null;
+        LoggedIn = false;
     }
 
     private void Start()
@@ -35,11 +42,40 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void Login()
     {
-        playerID = IDInput.text;
-        if (string.IsNullOrEmpty(playerID)) return;
+        PlayerID = IDInput.text;
+        if (string.IsNullOrEmpty(PlayerID)) return;
 
-        DontDestroyOnLoad(this.gameObject);
-        PhotonNetwork.JoinRoom(ROOM_NAME);    
+        StartCoroutine(Login_REST());
+    }
+
+    IEnumerator Login_REST()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(LOGIN_URL, form))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                print(www.error);
+            }
+            else
+            {
+                if (www.isDone)
+                {
+                    string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    LoginPlayer = JBUS_Player.CreateFromJSON(res);
+                    if(LoginPlayer.playerNickName != null) LoggedIn = true;
+
+                    if (LoggedIn)
+                    {
+                        DontDestroyOnLoad(this.gameObject);
+                        PhotonNetwork.JoinRoom(ROOM_NAME);
+                    }
+                }
+            }
+        }
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
