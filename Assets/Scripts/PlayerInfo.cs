@@ -26,11 +26,18 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         //UIManager 초기화
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         PV = GetComponent<PhotonView>();
+
+    }
+
+    private void Start()
+    {
+
     }
 
     private void Update()
     {
         if (!PV.IsMine) return;
+
         UpdateChatBubbleTime();
 
         //rotate other player's chat bubbles look to current player
@@ -47,6 +54,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             angle.z = 0;
             rotationAngle = Quaternion.Euler(angle);
             rotationAngle *= Quaternion.Euler(0, 180, 0);
+            //otherChatBubble.transform.Rotate(Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp).eulerAngles); // we rotate the rotationAngle )
             otherChatBubble.transform.rotation = Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp); // we rotate the rotationAngle 
         }
     }

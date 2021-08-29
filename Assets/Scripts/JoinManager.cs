@@ -12,7 +12,6 @@ public class JoinManager : MonoBehaviour
 
     [SerializeField] TMP_Dropdown dropdown;
     [SerializeField] TMP_InputField IDInput, NickNameInput;
-    [SerializeField] List<GameObject> prefabs;
 
     const string LOBBY_SCENE = "LOBBY";
     const string JOIN_URL = "https://jbus.herokuapp.com/user/join";
@@ -52,18 +51,10 @@ public class JoinManager : MonoBehaviour
 
     void changePrefab(string text)
     {
-
-        foreach (var prefab in prefabs)
-        {
-            if (prefab.name.Equals(text))
-            {
-                var prevPrefab = currentPrefab;
-                currentPrefab = Instantiate(prefab);
-                PlayerModel = text;
-                Destroy(prevPrefab);
-                break;
-            }
-        }
+        var prevPrefab = currentPrefab;
+        PlayerModel = text;
+        currentPrefab = Instantiate(Resources.Load(PlayerModel)) as GameObject;
+        Destroy(prevPrefab);
     }
 
     private void FixedUpdate()
