@@ -48,15 +48,15 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         foreach (GameObject otherChatBubble in chatBubbles)
         {
             if (otherChatBubble == chatBubble) continue;
-            otherChatBubble.transform.LookAt(targetPosition);
-            //var rotationAngle = Quaternion.LookRotation((targetPosition.position - otherChatBubble.transform.position).normalized); // we get the angle has to be rotated
-            //Vector3 angle = rotationAngle.eulerAngles;
-            //angle.x = 0;
-            //angle.z = 0;
-            //rotationAngle = Quaternion.Euler(angle);
-            //rotationAngle *= Quaternion.Euler(0, 180, 0);
+            //otherChatBubble.transform.LookAt(targetPosition);
+            var rotationAngle = Quaternion.LookRotation((targetPosition.position - otherChatBubble.transform.position).normalized); // we get the angle has to be rotated
+            Vector3 angle = rotationAngle.eulerAngles;
+            angle.x = 0;
+            angle.z = 0;
+            rotationAngle = Quaternion.Euler(angle);
+            rotationAngle *= Quaternion.Euler(0, 180, 0);
             //otherChatBubble.transform.Rotate(Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp).eulerAngles); // we rotate the rotationAngle )
-            //otherChatBubble.transform.rotation = Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp); // we rotate the rotationAngle 
+            otherChatBubble.transform.rotation = Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp); // we rotate the rotationAngle 
         }
     }
 
