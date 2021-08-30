@@ -53,7 +53,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
             angle.x = 0;
             angle.z = 0;
             rotationAngle = Quaternion.Euler(angle);
-            rotationAngle *= Quaternion.Euler(0, 180, 0);
+            //rotationAngle *= Quaternion.Euler(0, 180, 0);
             //otherChatBubble.transform.Rotate(Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp).eulerAngles); // we rotate the rotationAngle )
             otherChatBubble.transform.rotation = Quaternion.Slerp(otherChatBubble.transform.rotation, rotationAngle, Time.deltaTime * damp); // we rotate the rotationAngle 
         }
