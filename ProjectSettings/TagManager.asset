@@ -7,6 +7,7 @@ TagManager:
   - chatBubble
   - playerID
   - joinCharacterPrefab
+  - GameManager
   layers:
   - Default
   - TransparentFX

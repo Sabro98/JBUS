@@ -60,6 +60,11 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         }
     }
 
+    public bool IsMine()
+    {
+        return PV.IsMine;
+    }
+
     [PunRPC]
     public void UpdatePlayerID_RPC(string id)
     {

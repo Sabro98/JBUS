@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] GameObject spawner;
+
+    public GameObject WarpedPlayer;
+
     const string LOBBY_OBJECT_NAME = "LobbyManager";
+    const string ROOM_NAME = "JBNU";
 
     LobbyManager lobbyScript;
 
-    public float spawnX;
-    public float spawnZ;
 
     void Start()
     {
@@ -23,13 +28,26 @@ public class GameManager : MonoBehaviourPunCallbacks
         Destroy(lobbyObject.gameObject);
 
         //spawn player
-        SpawnPlayer(playerNickName, playerModel);
+        spawner.GetComponent<PlayerSpawner>().Spawn(playerNickName, playerModel);
+
+        //other init
+        WarpedPlayer = null;
     }
 
-    void SpawnPlayer(string playerNickName, string playerModel)
+    public void Warp(GameObject player, string target)
     {
-        Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
-        var player = PhotonNetwork.Instantiate(playerModel, randomPosition, Quaternion.identity);
-        player.GetComponent<PlayerInfo>().SetPlayerID(playerNickName);
+        DontDestroyOnLoad(this.gameObject);
+        WarpedPlayer = player;
+        PhotonNetwork.LoadLevel(target);
     }
+
+    //public override void OnJoinRoomFailed(short returnCode, string message)
+    //{
+    //    PhotonNetwork.CreateRoom(ROOM_NAME);
+    //}
+
+    //public override void OnJoinedRoom()
+    //{
+    //    PhotonNetwork.LoadLevel(GAME_SENCE);
+    //}
 }
