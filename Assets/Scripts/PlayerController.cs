@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     const string jumpUpAnim = "isJumpUp";
     const string jumpingAnim = "isJumping";
 
-
     GameObject chatInputObject;
     TMP_InputField chatField;
     PlayerInfo playerInfo;
@@ -48,17 +47,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            //커서 화면에 가두기
-            Cursor.lockState = CursorLockMode.Locked;
-
             //playerInfo 초기화
             playerInfo = GetComponent<PlayerInfo>();
-
-            //채팅 박스 초기화
-            chatInputObject = GameObject.Find("Canvas/ChatBubble");
-            chatField = chatInputObject.GetComponent<TMP_InputField>();
-            chatInputObject.SetActive(false);
+            InitChatComponent();
         }
+    }
+
+    void InitChatComponent()
+    {
+        UIManager uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
+        this.chatInputObject = uiManager.chatInputObj;
+        this.chatField = uiManager.chatField;
     }
 
     // Update is called once per frame
@@ -66,10 +65,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!PV.IsMine) return;
 
-        Chat();
         Look();
         Move();
         Jump();
+        Chat();
     }
 
     private void OnCollisionEnter(Collision collision)

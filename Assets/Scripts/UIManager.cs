@@ -8,18 +8,42 @@ using Photon.Pun;
 public class UIManager : MonoBehaviour
 {
     public int ChatCapacity = 6;
+    public TMP_InputField chatField;
+    public GameObject chatPanel, chatInputObj;
 
-    [SerializeField] GameObject chatPanel, textObject;
+    const string DISPLAY_CHAT = "DisplayChat_RPC";
+    const string CHAT_CANVAS = "Chatting";
+    const string TEXT_OBJECT = "ChatText";
 
+    GameObject textObject;
     List<Message> msgList;
     PhotonView PV;
 
-    const string DISPLAY_CHAT = "DisplayChat_RPC";
-
     private void Awake()
     {
+        //채팅 요소들 초기화
+        initChat();
+
         msgList = new List<Message>();
         PV = GetComponent<PhotonView>();
+
+        //커서 화면에 가두기
+        Cursor.lockState = CursorLockMode.Locked;
+
+        //채팅 박스 초기화
+        chatField = chatInputObj.GetComponent<TMP_InputField>();
+        chatInputObj.SetActive(false);
+    }
+
+    void initChat()
+    {
+        textObject = Instantiate(Resources.Load(TEXT_OBJECT)) as GameObject;
+
+        var ChatCanvas = Instantiate(Resources.Load(CHAT_CANVAS)) as GameObject;
+        var chatManager = ChatCanvas.GetComponent<ChatManager>();
+        chatPanel = chatManager.ChatPanel;
+        chatInputObj = chatManager.ChatBubble;
+        chatField = chatInputObj.GetComponent<TMP_InputField>();
     }
 
     //params -> (msg)

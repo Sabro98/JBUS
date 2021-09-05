@@ -11,22 +11,24 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text playerIDText;
 
     const string UPDATE_CHAT_BUBBLE = "UpdateChatBubble_RPC";
+    const string DESTROY_PLAYER = "DestroyPlayer_RPC";
     const string UPDATE_Player_ID = "UpdatePlayerID_RPC";
     const int damp = 5; // chat bubble's damp
+
+    public string PlayerName { get; set; }
+    public string PlayerModel { get; set; }
+    public string PlayerID { get; set; }
 
     UIManager uiManager;
     PhotonView PV;
 
     float chatBubbleTime;
 
-    public string PlayerID { get; set; }
-
     private void Awake()
     {
         //UIManager 초기화
-        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
         PV = GetComponent<PhotonView>();
-
     }
 
     private void Start()
@@ -68,8 +70,8 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdatePlayerID_RPC(string id)
     {
-        PlayerID = id;
-        playerIDText.text = PlayerID;
+        PlayerName = id;
+        playerIDText.text = PlayerName;
     }
 
     public void SetPlayerID(string id)
@@ -84,7 +86,7 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         //다른 세계의 자신에게도 채팅을 띄우도록
         PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, msg);
 
-        uiManager.DisplayChat(PlayerID + " : " + msg);
+        uiManager.DisplayChat(PlayerName + " : " + msg);
     }
 
     void UpdateChatBubbleTime()
@@ -102,10 +104,21 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
         chatBubble.GetComponentInChildren<TMP_Text>().text = msg;
     }
 
+    public void DestroyPlayer()
+    {
+        PV.RPC(DESTROY_PLAYER, RpcTarget.All);
+    }
+
+    [PunRPC]
+    void DestroyPlayer_RPC()
+    {
+        Destroy(this.gameObject);
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         if (!PV.IsMine) return;
         base.OnPlayerEnteredRoom(newPlayer);
-        PV.RPC(UPDATE_Player_ID, RpcTarget.All, PlayerID);
+        PV.RPC(UPDATE_Player_ID, RpcTarget.All, PlayerName);
     }
 }

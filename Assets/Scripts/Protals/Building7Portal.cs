@@ -6,11 +6,13 @@ using Photon.Pun;
 
 public class Building7Portal : MonoBehaviourPunCallbacks
 {
-    [SerializeField] GameObject InfoText;
+    [SerializeField] GameObject InfoText, WarpManager;
+
+    const string targetScene = "7th-floor-1";
 
     bool IsPlayerEnter;
     GameObject player;
-
+  
     private void Awake()
     {
         IsPlayerEnter = false;
@@ -21,9 +23,11 @@ public class Building7Portal : MonoBehaviourPunCallbacks
     {
         if (!IsPlayerEnter) return;
         if (Input.GetKey(KeyCode.E))
-        {
-            var manager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-            manager.Warp(player, "7th-floor-1");
+        {   
+            var manager = WarpManager.GetComponent<WarpManager>();
+            manager.Warp(player, targetScene);
+            IsPlayerEnter = false;
+            player.GetComponent<PlayerInfo>().DestroyPlayer();
         }
     }
 
