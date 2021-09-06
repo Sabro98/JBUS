@@ -83,7 +83,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 if (www.isDone)
                 {
                     string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-                    print(res);
                     LoginPlayer = JBUS_Player.CreateFromJSON(res);
                     if(LoginPlayer.playerNickName != null) LoggedIn = true;
 
