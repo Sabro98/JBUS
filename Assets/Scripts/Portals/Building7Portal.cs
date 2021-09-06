@@ -27,7 +27,8 @@ public class Building7Portal : MonoBehaviourPunCallbacks
             var manager = WarpManager.GetComponent<WarpManager>();
             manager.Warp(player, targetScene);
             IsPlayerEnter = false;
-            player.GetComponent<PlayerInfo>().DestroyPlayer();
+            //player.GetComponent<PlayerInfo>().DestroyPlayer();
+            PhotonNetwork.Destroy(player.gameObject);
         }
     }
 
