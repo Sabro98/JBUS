@@ -28,6 +28,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PlayerID = "";
         LoginPlayer = null;
         LoggedIn = false;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()
@@ -46,6 +47,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(PlayerID)) return;
 
         StartCoroutine(Login_REST());
+        SceneManager.LoadScene("JustLoadingTitle");
     }
 
     IEnumerator Login_REST()
@@ -58,19 +60,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
             {
-                print(www.error);
+                print(www.downloadHandler.data);
+                Destroy(this.gameObject);
+                SceneManager.LoadScene(this.gameObject.scene.name);
+                //TODO: 틀린 계정 입력시 다시 돌아오도록
             }
             else
             {
                 if (www.isDone)
                 {
                     string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    print(res);
                     LoginPlayer = JBUS_Player.CreateFromJSON(res);
                     if(LoginPlayer.playerNickName != null) LoggedIn = true;
 
                     if (LoggedIn)
                     {
-                        DontDestroyOnLoad(this.gameObject);
                         PhotonNetwork.JoinRoom(ROOM_NAME);
                     }
                 }
