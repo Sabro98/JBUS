@@ -4,9 +4,11 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class WarpManager : MonoBehaviour
+public class WarpManager : MonoBehaviourPunCallbacks
 {
     public JBUS_Player warpPlayer { get; set; }
+    const string ROOM_NAME = "TEST";
+    string to;
 
     private void Awake()
     {
@@ -17,7 +19,23 @@ public class WarpManager : MonoBehaviour
     {
         var playerInfo = player.GetComponent<PlayerInfo>();
         warpPlayer = new JBUS_Player(playerInfo.PlayerName, playerInfo.PlayerModel, playerInfo.PlayerID);
-        //PhotonNetwork.LoadLevel(to);
-        SceneManager.LoadScene(to);
+        this.to = to;
+        SceneManager.LoadScene("JustLoadingTitle");
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinRoom(ROOM_NAME);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        PhotonNetwork.CreateRoom(ROOM_NAME);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel(to);
     }
 }

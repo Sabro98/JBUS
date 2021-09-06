@@ -8,7 +8,6 @@ public class FirstFloorManager : MonoBehaviourPunCallbacks
     [SerializeField] PlayerSpawner spawner;
 
     const string PREV_PORTAL_NAME = "WarpManager";
-    const string UI_MANAGER = "UIManager";
 
     WarpManager prevManager;
 
