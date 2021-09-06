@@ -12,6 +12,7 @@ using UnityEngine.Networking;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_InputField IDInput;
+    [SerializeField] GameObject LoginComponent, LoadingComponent;
 
     public string PlayerID { get; set; }
     public JBUS_Player LoginPlayer { get; set; }
@@ -20,6 +21,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
     const string LOGIN_URL = "https://jbus.herokuapp.com/user/login";
+
 
     bool LoggedIn;
 
@@ -46,8 +48,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PlayerID = IDInput.text;
         if (string.IsNullOrEmpty(PlayerID)) return;
 
+        DisplayLoading();
         StartCoroutine(Login_REST());
-        SceneManager.LoadScene("JustLoadingTitle");
+    }
+
+    void DisplayLoading()
+    {
+        LoginComponent.SetActive(false);
+        LoadingComponent.SetActive(true);
+    }
+
+    void DisplayLogin()
+    {
+        LoginComponent.SetActive(true);
+        LoadingComponent.SetActive(false);
     }
 
     IEnumerator Login_REST()
@@ -61,8 +75,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (www.result != UnityWebRequest.Result.Success)
             {
                 print(www.downloadHandler.data);
-                Destroy(this.gameObject);
-                SceneManager.LoadScene(this.gameObject.scene.name);
+                DisplayLogin();
                 //TODO: 틀린 계정 입력시 다시 돌아오도록
             }
             else
