@@ -21,11 +21,8 @@ public class FirstFloorManager : MonoBehaviourPunCallbacks
         var prevManagerObj = GameObject.Find(PREV_PORTAL_NAME);
         prevManager = prevManagerObj.GetComponent<WarpManager>();
         var warpPlayer = prevManager.warpPlayer.Clone() as JBUS_Player;
-        var currPlayerName = warpPlayer.playerNickName;
-        var currPlayerModel = warpPlayer.playerModel;
-        var currPlayerID = warpPlayer.playerID;
 
-        spawner.Spawn(currPlayerName, currPlayerModel, currPlayerID);
+        spawner.Spawn(warpPlayer);
         Destroy(prevManagerObj.gameObject);
     }
 }

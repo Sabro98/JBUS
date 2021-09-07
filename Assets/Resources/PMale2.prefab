@@ -434,12 +434,13 @@ GameObject:
   - component: {fileID: 2185958157341979802}
   - component: {fileID: 2239666959714498126}
   - component: {fileID: 2181793936739636880}
-  - component: {fileID: -5208803563281084414}
   - component: {fileID: 1882295304343643972}
   - component: {fileID: 7163431089166507580}
   - component: {fileID: -7089758985425276230}
   - component: {fileID: -3073024914403018776}
-  - component: {fileID: 1606845661498121260}
+  - component: {fileID: -5253861748404400523}
+  - component: {fileID: -2493842116172404359}
+  - component: {fileID: 3185678785058621379}
   m_Layer: 0
   m_Name: PMale2
   m_TagString: Player
@@ -509,24 +510,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-5208803563281084414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2180221981191878112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c712e1eac37c4bccbab6131ad03665f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSensitivity: 1
-  sprintSpeed: 18
-  walkSpeed: 9
-  jumpForce: 300
-  smoothTime: 0.1
-  cameraHolder: {fileID: 9220126919272434116}
 --- !u!54 &1882295304343643972
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -616,7 +599,7 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &1606845661498121260
+--- !u!114 &-5253861748404400523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -625,10 +608,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 2180221981191878112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c887e2d7b1748f185f2ad1181469e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6abf575d13a2d4d8d87a5e0d2e3343c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 1
+  sprintSpeed: 18
+  walkSpeed: 9
+  jumpForce: 300
+  smoothTime: 0.1
+  cameraHolder: {fileID: 9220126919272434116}
+--- !u!114 &-2493842116172404359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180221981191878112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d486e65e0fe64c1695f507eb0aa54a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   chatBubble: {fileID: 867450828546081509}
+--- !u!114 &3185678785058621379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180221981191878112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcdb1bbfab6ce414ea2a0537f6bce453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   playerIDText: {fileID: 3023304183885845081}
 --- !u!1 &2189676461781974688
 GameObject:

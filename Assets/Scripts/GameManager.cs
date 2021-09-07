@@ -10,27 +10,29 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject spawner;
 
     const string LOBBY_OBJECT_NAME = "LobbyManager";
-    const string UI_MANAGER = "UIManager";
-
-    LobbyManager lobbyScript;
-
-    private void Awake()
-    {
-
-    }
 
     void Start()
     {
         //init playerId
+        JBUS_Player CurrPlayer = InitPlayer();
+        print(CurrPlayer);
+        //spawn player
+        SpawnPlayer(CurrPlayer);
+    }
+
+    JBUS_Player InitPlayer()
+    {
         var lobbyObject = GameObject.Find(LOBBY_OBJECT_NAME);
-        lobbyScript = lobbyObject.GetComponent<LobbyManager>();
+        LobbyManager lobbyScript = lobbyObject.GetComponent<LobbyManager>();
         var LoginPlayer = lobbyScript.LoginPlayer;
-        string playerID = LoginPlayer.playerID;
-        string playerNickName = LoginPlayer.playerNickName;
-        string playerModel = "P" + LoginPlayer.playerModel;
         Destroy(lobbyObject.gameObject);
 
-        //spawn player
-        spawner.GetComponent<PlayerSpawner>().Spawn(playerNickName, playerModel, playerID);
+        LoginPlayer.playerModel = "P" + LoginPlayer.playerModel;
+        return LoginPlayer;
+    }
+
+    void SpawnPlayer(JBUS_Player currPlayer)
+    {
+        spawner.GetComponent<PlayerSpawner>().Spawn(currPlayer);
     }
 }

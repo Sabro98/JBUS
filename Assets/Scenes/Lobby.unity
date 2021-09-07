@@ -630,8 +630,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2130631285}
-        m_TargetAssemblyTypeName: CreateAndJoinRooms, Assembly-CSharp
-        m_MethodName: Login
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: OnLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -865,7 +865,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2130631285}
         m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: join
+        m_MethodName: OnJoin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -923,7 +923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1102373798}
   m_Layer: 5
-  m_Name: LoginComponent
+  m_Name: NormalComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1873,5 +1873,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IDInput: {fileID: 2119233350}
-  LoginComponent: {fileID: 1102373797}
+  NormalComponent: {fileID: 1102373797}
   LoadingComponent: {fileID: 1503297883}

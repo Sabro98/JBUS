@@ -18,7 +18,7 @@ public class WarpManager : MonoBehaviourPunCallbacks
     public void Warp(GameObject player, string to)
     {
         var playerInfo = player.GetComponent<PlayerInfo>();
-        warpPlayer = new JBUS_Player(playerInfo.PlayerName, playerInfo.PlayerModel, playerInfo.PlayerID);
+        warpPlayer = playerInfo.Player;
         this.to = to;
         SceneManager.LoadScene("JustLoadingTitle");
         PhotonNetwork.LeaveRoom();

@@ -13,16 +13,11 @@ public class PlayerController : MonoBehaviour
     const string jumpUpAnim = "isJumpUp";
     const string jumpingAnim = "isJumping";
 
-    GameObject chatInputObject;
-    TMP_InputField chatField;
-    PlayerInfo playerInfo;
-
     float verticalLookRotation;
 
     bool grounded;
     bool jumpUp;
     bool jumping;
-    bool isChatting;
 
     Vector3 smoothMoveVelocity;
     Vector3 moveAmount;
@@ -45,19 +40,6 @@ public class PlayerController : MonoBehaviour
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(rb);
         }
-        else
-        {
-            //playerInfo 초기화
-            playerInfo = GetComponent<PlayerInfo>();
-            InitChatComponent();
-        }
-    }
-
-    void InitChatComponent()
-    {
-        UIManager uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
-        this.chatInputObject = uiManager.chatInputObj;
-        this.chatField = uiManager.chatField;
     }
 
     // Update is called once per frame
@@ -68,7 +50,6 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
-        Chat();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -85,57 +66,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Chat()
-    {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            if (isChatting)
-            {
-                string msg = chatField.text;
-
-                if(msg != "")
-                {
-                    playerInfo.Chat(msg);
-                    chatField.text = "";
-                }
-
-                chatField.ActivateInputField();
-                chatField.Select();
-                chatInputObject.SetActive(false);
-
-                isChatting = false;
-            }
-            else
-            {
-                isChatting = true;
-
-                chatInputObject.SetActive(true);
-                chatField.ActivateInputField();
-                chatField.Select();
-            }
-        }
-
-        //esc를 눌렀을 때 채팅 종료
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isChatting)
-            {
-                chatField.text = "";
-                chatField.ActivateInputField();
-                chatField.Select();
-                chatInputObject.SetActive(false);
-                isChatting = false;
-            }
-        }
-    }
-
     void Move()
     {
         float horizontal = Input.GetAxis("Horizontal"),
             vertical = Input.GetAxis("Vertical");
 
         //채팅중에는 이동을 못하도록 -> 부드럽게 멈추도록 처리가 필요할듯
-        if(isChatting)
+        if(PlayerChatting.IsChatting)
         {
             horizontal = 0f;
             vertical = 0f;
@@ -151,7 +88,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         //채팅 중에는 점프를 못하도록
-        if (isChatting) return;
+        if (PlayerChatting.IsChatting) return;
 
         if(Input.GetKeyDown(KeyCode.Space) && grounded)
         {
@@ -160,7 +97,6 @@ public class PlayerController : MonoBehaviour
             jumpUp = true;
             animator.SetBool(jumpUpAnim, jumpUp);
         }
-
     }
 
     void Look()

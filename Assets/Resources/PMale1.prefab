@@ -511,12 +511,13 @@ GameObject:
   - component: {fileID: 2185958157341979802}
   - component: {fileID: 2239666959714498126}
   - component: {fileID: 2181793936739636880}
-  - component: {fileID: -5208803563281084414}
   - component: {fileID: 1882295304343643972}
   - component: {fileID: 7163431089166507580}
   - component: {fileID: -7089758985425276230}
   - component: {fileID: -3073024914403018776}
-  - component: {fileID: 1606845661498121260}
+  - component: {fileID: -512351711115495815}
+  - component: {fileID: -5067152051155544115}
+  - component: {fileID: -4678980053569249415}
   m_Layer: 0
   m_Name: PMale1
   m_TagString: Player
@@ -586,24 +587,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-5208803563281084414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2180221981191878112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c712e1eac37c4bccbab6131ad03665f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSensitivity: 1
-  sprintSpeed: 18
-  walkSpeed: 9
-  jumpForce: 300
-  smoothTime: 0.1
-  cameraHolder: {fileID: 9220126919272434116}
 --- !u!54 &1882295304343643972
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -693,7 +676,7 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &1606845661498121260
+--- !u!114 &-512351711115495815
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -702,10 +685,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 2180221981191878112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c887e2d7b1748f185f2ad1181469e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6abf575d13a2d4d8d87a5e0d2e3343c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 1
+  sprintSpeed: 18
+  walkSpeed: 9
+  jumpForce: 300
+  smoothTime: 0.1
+  cameraHolder: {fileID: 9220126919272434116}
+--- !u!114 &-5067152051155544115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180221981191878112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d486e65e0fe64c1695f507eb0aa54a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   chatBubble: {fileID: 155300829305875968}
+--- !u!114 &-4678980053569249415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180221981191878112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcdb1bbfab6ce414ea2a0537f6bce453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   playerIDText: {fileID: 7648142785825476104}
 --- !u!1 &2324130430303289522
 GameObject:

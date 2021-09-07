@@ -5,23 +5,16 @@ using Photon.Pun;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    public float spawnX;
-    public float spawnZ;
+    public float minx, maxx, minz, maxz;
 
-    public void Spawn(string playerNickName, string playerModel, string playerID)
+    public void Spawn(JBUS_Player currPlayer)
     {
-        Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
-        var player = PhotonNetwork.Instantiate(playerModel, randomPosition, Quaternion.identity);
+        Vector3 randomPosition = new Vector3(Random.Range(minx, maxx), 5, Random.Range(minz, maxz)); //set random position
+        //string playerModel = currPlayer.playerModel;
+        var player = PhotonNetwork.Instantiate(currPlayer.playerModel, randomPosition, Quaternion.identity);    //Instantiate player use PhotonNetwork
+
+        //init playerInfo
         var playerInfo = player.GetComponent<PlayerInfo>();
-        playerInfo.SetPlayerID(playerNickName);
-        playerInfo.PlayerModel = playerModel;
-        playerInfo.PlayerID = playerID;
-    }
-
-    public void Spawn(PlayerInfo playerInfo)
-    {
-        string playerModel = playerInfo.PlayerModel;
-        Vector3 randomPosition = new Vector3(Random.Range(-spawnX, spawnX), 5, Random.Range(-spawnZ, spawnZ));
-        var player = PhotonNetwork.Instantiate(playerModel, randomPosition, Quaternion.identity);
+        playerInfo.Player = currPlayer;
     }
 }

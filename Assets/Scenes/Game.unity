@@ -464,8 +464,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8b635565dda4955aacbf69c67ff674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnX: 50
-  spawnZ: 50
+  minx: -5
+  maxx: 5
+  minz: -5
+  maxz: 5
 --- !u!4 &342807549
 Transform:
   m_ObjectHideFlags: 0
