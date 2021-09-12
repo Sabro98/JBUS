@@ -59,6 +59,7 @@ sysinfo.txt
 *Photon*
 *Supercyan*
 *TextMesh Pro*
-Assets/Font/*.otf*
+Assets/Fonts
 # Crashlytics generated file
 crashlytics-build.properties
+
