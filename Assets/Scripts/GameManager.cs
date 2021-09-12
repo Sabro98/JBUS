@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //init playerId
         JBUS_Player CurrPlayer = InitPlayer();
-        print(CurrPlayer);
         //spawn player
         SpawnPlayer(CurrPlayer);
     }
@@ -34,5 +33,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     void SpawnPlayer(JBUS_Player currPlayer)
     {
         spawner.GetComponent<PlayerSpawner>().Spawn(currPlayer);
+    }
+
+    public static void QuitGame()
+    {
+        Application.Quit();
     }
 }

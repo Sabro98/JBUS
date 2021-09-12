@@ -13,7 +13,7 @@ public class PlayerChatting : MonoBehaviour
 
     public static bool IsChatting { get; set; }
 
-    UIManager uiManager;
+    CanvasManager canvasManager;
     GameObject chatInputObject;
     TMP_InputField chatField;
     PhotonView PV;
@@ -31,9 +31,6 @@ public class PlayerChatting : MonoBehaviour
     {
         if (!PV.IsMine) return;
 
-        //UIManager 초기화
-        uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
-
         InitChatComponent();
     }
 
@@ -49,9 +46,10 @@ public class PlayerChatting : MonoBehaviour
 
     void InitChatComponent()
     {
-        UIManager uiManager = GameObject.FindWithTag("UIManager").GetComponent<UIManager>();
-        chatInputObject = uiManager.chatInputObj;
-        chatField = uiManager.chatField;
+        //UIManager 초기화
+        canvasManager = GameObject.FindWithTag("Canvas").GetComponent<CanvasManager>();
+        chatInputObject = canvasManager.chatInputObj;
+        chatField = canvasManager.chatField;
     }
 
     void Chat()
@@ -73,7 +71,7 @@ public class PlayerChatting : MonoBehaviour
                     //다른 세계의 자신에게도 채팅을 띄우도록
                     PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, msg);
 
-                    uiManager.DisplayChat(playerInfo.Player.playerNickName + " : " + msg);
+                    canvasManager.DisplayChat(playerInfo.Player.playerNickName + " : " + msg);
                     chatField.text = "";
                 }
 

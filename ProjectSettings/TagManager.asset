@@ -9,6 +9,7 @@ TagManager:
   - joinCharacterPrefab
   - GameManager
   - UIManager
+  - Canvas
   layers:
   - Default
   - TransparentFX
