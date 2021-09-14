@@ -14,19 +14,25 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_InputField IDInput;      //사용자 아이디 입력받는 input field
     [SerializeField] GameObject NormalComponent;  //평상시 보이는 요소들 (로그인 필드, 버튼 ..)
     [SerializeField] GameObject LoadingComponent; //로딩중에 보여줄 글씨
+    [SerializeField] TMP_Dropdown ChannelDropDown; //채널 선택 Component
 
     public string PlayerID { get; set; }
     public JBUS_Player LoginPlayer { get; set; }
 
-    const string ROOM_NAME = "JBNU";
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
     const string LOGIN_URL = "https://jbus.herokuapp.com/user/login"; //로그인 요청을 보낼 url
+    const int ROOM_MAX_PLAYER = 16;
+    const int GAME_DOSE_NOT_EXIT_ERROR_CODE = 32758;
+    const int GAME_FULL_ERROR_CODE = 32765;
+
+    string roomName;
 
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
         PlayerID = "";
+        roomName = "";
         LoginPlayer = null;
     }
 
@@ -41,6 +47,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PlayerID = IDInput.text;
         if (string.IsNullOrEmpty(PlayerID)) return; //유효성 검사
+
+        roomName = ChannelDropDown.options[ChannelDropDown.value].text;
 
         DisplayLoading();
         StartCoroutine(Login_REST());
@@ -79,7 +87,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 {
                     string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
                     LoginPlayer = JBUS_Player.CreateFromJSON(res);
-                    PhotonNetwork.JoinRoom(ROOM_NAME);
+                    PhotonNetwork.JoinRoom(roomName);
                 }
             }
         }
@@ -88,7 +96,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     //Room join에 실패할 때 -> 스스로 방을 만들음
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        PhotonNetwork.CreateRoom(ROOM_NAME);
+        if(returnCode == GAME_DOSE_NOT_EXIT_ERROR_CODE)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = ROOM_MAX_PLAYER;
+
+            PhotonNetwork.CreateRoom(roomName, roomOptions);
+        }
+
+        //game full
+        if (returnCode == GAME_FULL_ERROR_CODE)
+        {
+            DisplayNormal();
+        }
     }
 
     //Room join에 성공하면 Game Scene을 불러옴
