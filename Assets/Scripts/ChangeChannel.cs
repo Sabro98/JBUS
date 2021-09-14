@@ -15,12 +15,14 @@ public class ChangeChannel : MonoBehaviourPunCallbacks
         IsChangeChannel = false;
     }
 
-    public void Change(string to)
+    public void Change(GameObject player, string to)
     {
         ChangeTargetRoomName = to;
         //DontDestroyOnLoad(this);
         //SceneManager.LoadScene(JustLoadingScript.SceneName);
         IsChangeChannel = true;
+        var playerObj = Instantiate(Resources.Load("PlayerInfoObj")) as GameObject;
+        playerObj.GetComponent<ForPlayerSpawn>().SpawnPlayer = player.GetComponent<PlayerInfo>().Player.Clone() as JBUS_Player;
         PhotonNetwork.LeaveRoom();
     }
 
@@ -40,7 +42,6 @@ public class ChangeChannel : MonoBehaviourPunCallbacks
     {
         if (!IsChangeChannel) return;
         PhotonNetwork.LoadLevel("Game");
-        //TODO: GameMananger에서 유저의 정보를 못가져옴
         //Destroy(this);
     }
 }

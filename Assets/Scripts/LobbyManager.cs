@@ -17,7 +17,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Dropdown ChannelDropDown; //채널 선택 Component
 
     public string PlayerID { get; set; }
-    public JBUS_Player LoginPlayer { get; set; }
 
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
@@ -30,10 +29,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
         PlayerID = "";
         roomName = "";
-        LoginPlayer = null;
     }
 
     //Join 버튼을 누르면 해당 scene를 불러와줌
@@ -86,7 +83,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 if (www.isDone)
                 {
                     string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-                    LoginPlayer = JBUS_Player.CreateFromJSON(res);
+                    var playerObj = Instantiate(Resources.Load("PlayerInfoObj")) as GameObject;
+                    playerObj.GetComponent<ForPlayerSpawn>().SpawnPlayer = JBUS_Player.CreateFromJSON(res);
                     PhotonNetwork.JoinRoom(roomName);
                 }
             }

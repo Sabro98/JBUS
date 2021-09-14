@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject spawner;
 
-    const string LOBBY_OBJECT_NAME = "LobbyManager";
+    const string PLAYER_OBJECT_NAME = "PlayerSpawnInfo";
 
     void Start()
     {
@@ -21,12 +21,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     JBUS_Player InitPlayer()
     {
-        var lobbyObject = GameObject.Find(LOBBY_OBJECT_NAME);
-        LobbyManager lobbyScript = lobbyObject.GetComponent<LobbyManager>();
-        var LoginPlayer = lobbyScript.LoginPlayer;
+        var lobbyObject = GameObject.FindWithTag(PLAYER_OBJECT_NAME);
+        var lobbyScript = lobbyObject.GetComponent<ForPlayerSpawn>();
+        var LoginPlayer = lobbyScript.SpawnPlayer;
         Destroy(lobbyObject.gameObject);
 
-        LoginPlayer.playerModel = "P" + LoginPlayer.playerModel;
+        if(LoginPlayer.playerModel[0] != 'P')
+            LoginPlayer.playerModel = "P" + LoginPlayer.playerModel;
         return LoginPlayer;
     }
 

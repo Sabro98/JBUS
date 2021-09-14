@@ -76,7 +76,20 @@ public class CanvasManager : MonoBehaviour
     {
         var targetRoomName = ChannelDropDown.options[ChannelDropDown.value].text;
         InActiveMenu();
-        gameObject.GetComponent<ChangeChannel>().Change(targetRoomName);
+
+        gameObject.GetComponent<ChangeChannel>().Change(FindMyPlayer(), targetRoomName);
+    }
+
+    GameObject FindMyPlayer()
+    {
+        GameObject mine = null;
+        foreach(var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (!player.GetComponent<PlayerInfo>().IsMine()) continue;
+            mine = player;
+            break;
+        }
+        return mine;
     }
 
     public void OnChannelCancleBtn()
