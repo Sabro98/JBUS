@@ -446,6 +446,10 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 458346203230349897, guid: 84f5bf0a914854cc4a484832354e8c0e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 458346204522191856, guid: 84f5bf0a914854cc4a484832354e8c0e, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -532,6 +536,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 458346204522191863, guid: 84f5bf0a914854cc4a484832354e8c0e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 458346204629446098, guid: 84f5bf0a914854cc4a484832354e8c0e, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

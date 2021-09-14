@@ -101,6 +101,8 @@ public class PlayerController : MonoBehaviour
 
     void Look()
     {
+        if (CanvasManager.IsMenuActive) return;
+
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity);
         verticalLookRotation += Input.GetAxis("Mouse Y") * mouseSensitivity;
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f);

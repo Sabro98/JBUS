@@ -48,8 +48,8 @@ public class PlayerChatting : MonoBehaviour
     {
         //UIManager 초기화
         canvasManager = GameObject.FindWithTag("Canvas").GetComponent<CanvasManager>();
-        chatInputObject = canvasManager.chatInputObj;
-        chatField = canvasManager.chatField;
+        chatInputObject = canvasManager.GetChatInputObj();
+        chatField = canvasManager.GetChatField();
     }
 
     void Chat()

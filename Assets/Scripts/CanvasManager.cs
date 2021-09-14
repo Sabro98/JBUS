@@ -6,26 +6,24 @@ using TMPro;
 
 public class CanvasManager : MonoBehaviour
 {
-    public GameObject chatPanel, chatInputObj, GameMenuObj;
+    [SerializeField] GameObject textObject, GameMenuObj, chatInputObj, chatPanel;
+    [SerializeField] GameObject ChangeChannelObj, BasicButtonsObj;
+    [SerializeField] TMP_Dropdown ChannelDropDown;
 
-    public int ChatCapacity = 6;
-    public TMP_InputField chatField;
+    public static bool IsMenuActive { get; set; } //메뉴가 활성 상태인지
 
+    const int CHAT_CAPACITY = 6;
     const string DISPLAY_CHAT = "DisplayChat_RPC";
-    const string CHAT_CANVAS = "Canvas";
-    const string TEXT_OBJECT = "ChatText";
 
-    GameObject textObject;
+    TMP_InputField chatField;
     List<Message> msgList;
     PhotonView PV;
 
     private void Awake()
     {
-        //채팅 요소들 초기화
-        initChat();
-
         msgList = new List<Message>();
         PV = GetComponent<PhotonView>();
+        IsMenuActive = false;
 
         //커서 화면에 가두기
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,10 +39,26 @@ public class CanvasManager : MonoBehaviour
         {
             if (PlayerChatting.IsChatting) return;
 
-            GameMenuObj.SetActive(!GameMenuObj.activeSelf);
-            if (GameMenuObj.activeSelf) Cursor.lockState = CursorLockMode.Confined;
-            else Cursor.lockState = CursorLockMode.Locked;
+            if (!GameMenuObj.activeSelf) ActiveMenu();
+            else InActiveMenu();
+            
         }
+    }
+
+    void ActiveMenu()
+    {
+        GameMenuObj.SetActive(true);
+        Cursor.lockState = CursorLockMode.Confined;
+        IsMenuActive = true;
+    }
+
+    void InActiveMenu()
+    {
+        ChangeChannelObj.SetActive(false);
+        BasicButtonsObj.SetActive(true);
+        GameMenuObj.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        IsMenuActive = false;
     }
 
     public void OnQuitBtn()
@@ -52,9 +66,22 @@ public class CanvasManager : MonoBehaviour
         GameManager.QuitGame();
     }
 
-    void initChat()
+    public void OnChangeChannelBtn()
     {
-        textObject = Instantiate(Resources.Load(TEXT_OBJECT)) as GameObject;
+        BasicButtonsObj.SetActive(false);
+        ChangeChannelObj.SetActive(true);
+    }
+
+    public void OnChannelConfirmBtn()
+    {
+        var targetRoomName = ChannelDropDown.options[ChannelDropDown.value].text;
+        InActiveMenu();
+        gameObject.GetComponent<ChangeChannel>().Change(targetRoomName);
+    }
+
+    public void OnChannelCancleBtn()
+    {
+        InActiveMenu();
     }
 
     //params -> (msg)
@@ -63,10 +90,20 @@ public class CanvasManager : MonoBehaviour
         PV.RPC(DISPLAY_CHAT, RpcTarget.All, msg);
     }
 
+    public TMP_InputField GetChatField()
+    {
+        return chatField;
+    }
+
+    public GameObject GetChatInputObj()
+    {
+        return chatInputObj;
+    }
+
     [PunRPC]
     void DisplayChat_RPC(string msg)
     {
-        if (msgList.Count >= ChatCapacity)
+        if (msgList.Count >= CHAT_CAPACITY)
         {
             Destroy(msgList[0].textObject.gameObject);
             msgList.Remove(msgList[0]);
@@ -80,7 +117,6 @@ public class CanvasManager : MonoBehaviour
         newMessage.textObject.text = msg;
 
         msgList.Add(newMessage);
-
     }
 }
 
