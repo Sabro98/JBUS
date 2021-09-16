@@ -31,6 +31,23 @@ public class CanvasManager : MonoBehaviour
         //채팅 박스 초기화
         chatField = chatInputObj.GetComponent<TMP_InputField>();
         chatInputObj.SetActive(false);
+
+        //init dropdown
+        initDropDown();
+    }
+
+    void initDropDown()
+    {
+        for(int i=0; i<ChannelDropDown.options.Count; i++)
+        {
+            var option = ChannelDropDown.options[i];
+
+            if (option.text == PhotonNetwork.CurrentRoom.Name)
+            {
+                ChannelDropDown.value = i;
+                break;
+            }
+        }
     }
 
     private void Update()

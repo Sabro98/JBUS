@@ -44,7 +44,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PlayerID = IDInput.text;
         if (string.IsNullOrEmpty(PlayerID)) return; //유효성 검사
-
+        
         roomName = ChannelDropDown.options[ChannelDropDown.value].text;
 
         DisplayLoading();
