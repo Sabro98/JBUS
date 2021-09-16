@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     const string walkAnim = "isWalk";
     const string jumpUpAnim = "isJumpUp";
     const string jumpingAnim = "isJumping";
+    const string GROUND_TAG = "Ground";
 
     float verticalLookRotation;
 
@@ -56,13 +57,16 @@ public class PlayerController : MonoBehaviour
     {
         if (!PV.IsMine) return;
 
-        if (!grounded)
+        if (collision.gameObject.tag.Equals(GROUND_TAG))
         {
-            grounded = true;
-            jumpUp = false;
-            jumping = false;
-            animator.SetBool(jumpUpAnim, false);
-            animator.SetBool(jumpingAnim, false);
+            if (!grounded)
+            {
+                grounded = true;
+                jumpUp = false;
+                jumping = false;
+                animator.SetBool(jumpUpAnim, false);
+                animator.SetBool(jumpingAnim, false);
+            }
         }
     }
 

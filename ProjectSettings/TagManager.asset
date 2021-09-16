@@ -11,6 +11,7 @@ TagManager:
   - UIManager
   - Canvas
   - PlayerSpawnInfo
+  - Ground
   layers:
   - Default
   - TransparentFX
