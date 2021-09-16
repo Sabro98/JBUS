@@ -12,6 +12,7 @@ public class JoinManager : MonoBehaviour
 
     [SerializeField] TMP_Dropdown dropdown;
     [SerializeField] TMP_InputField IDInput, NickNameInput;
+    [SerializeField] GameObject ErrorText, NormalComponent, LoadingComponent;
 
     const string LOBBY_SCENE = "LOBBY";
     const string JOIN_URL = "https://jbus.herokuapp.com/user/join";
@@ -20,6 +21,7 @@ public class JoinManager : MonoBehaviour
     public string PlayerModel { get; set; }
     public string PlayerNickName { get; set; }
 
+    const string FAIL_TO_JOIN_ERROR_MSG = "중복된 아이디가 존재합니다!";
 
     GameObject currentPrefab;
 
@@ -67,7 +69,29 @@ public class JoinManager : MonoBehaviour
             currentPrefab.transform.rotation = Quaternion.Euler(rotation);
         }
     }
-    
+
+    //로딩화면 출력
+    void DisplayLoading()
+    {
+        if(currentPrefab != null) currentPrefab.SetActive(false);
+        NormalComponent.SetActive(false);
+        LoadingComponent.SetActive(true);
+    }
+
+    //일반 화면을 출력
+    void DisplayNormal()
+    {
+        if (currentPrefab != null) currentPrefab.SetActive(true);
+        NormalComponent.SetActive(true);
+        LoadingComponent.SetActive(false);
+    }
+
+    //에러 메세지를 보여줌
+    void DisplayErrorMsg(string msg)
+    {
+        ErrorText.SetActive(true);
+        ErrorText.GetComponent<TMP_Text>().text = msg;
+    }
 
     void Function_Dropdown(TMP_Dropdown select)
     {
@@ -75,7 +99,7 @@ public class JoinManager : MonoBehaviour
         changePrefab(selected);
     }
 
-    public void joinPlayer()
+    public void OnJoinBtn()
     {
         PlayerID = IDInput.text;
         PlayerNickName = NickNameInput.text;
@@ -83,10 +107,11 @@ public class JoinManager : MonoBehaviour
         if (string.IsNullOrEmpty(PlayerNickName)) return;
 
         //join player
+        DisplayLoading();
         StartCoroutine(Join_REST());
     }
 
-    public void BackToLobby()
+    public void OnBackBtn()
     {
         SceneManager.LoadScene(LOBBY_SCENE);
     }
@@ -103,7 +128,8 @@ public class JoinManager : MonoBehaviour
             yield return www.SendWebRequest();
             if(www.result != UnityWebRequest.Result.Success)
             {
-                print(www.error);
+                DisplayNormal();
+                DisplayErrorMsg(FAIL_TO_JOIN_ERROR_MSG);
             }
             else
             {

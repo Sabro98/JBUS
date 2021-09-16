@@ -31,12 +31,10 @@ public class CanvasManager : MonoBehaviour
         //채팅 박스 초기화
         chatField = chatInputObj.GetComponent<TMP_InputField>();
         chatInputObj.SetActive(false);
-
-        //init dropdown
-        initDropDown();
     }
 
-    void initDropDown()
+    //dropdown의 value를 현재 룸으로 설정
+    void DropDownToCurrentRoom()
     {
         for(int i=0; i<ChannelDropDown.options.Count; i++)
         {
@@ -87,6 +85,7 @@ public class CanvasManager : MonoBehaviour
     {
         BasicButtonsObj.SetActive(false);
         ChangeChannelObj.SetActive(true);
+        DropDownToCurrentRoom();
     }
 
     public void OnChannelConfirmBtn()

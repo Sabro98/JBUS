@@ -11,16 +11,18 @@ using UnityEngine.Networking;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] TMP_InputField IDInput;      //사용자 아이디 입력받는 input field
-    [SerializeField] GameObject NormalComponent;  //평상시 보이는 요소들 (로그인 필드, 버튼 ..)
-    [SerializeField] GameObject LoadingComponent; //로딩중에 보여줄 글씨
+    [SerializeField] TMP_InputField IDInput;       //사용자 아이디 입력받는 input field
+    [SerializeField] GameObject NormalComponent;   //평상시 보이는 요소들 (로그인 필드, 버튼 ..)
+    [SerializeField] GameObject LoadingComponent;  //로딩중에 보여줄 글씨
     [SerializeField] TMP_Dropdown ChannelDropDown; //채널 선택 Component
+    [SerializeField] GameObject ErrorText;         //에러 발생시 출력해줄 text 
 
     public string PlayerID { get; set; }
 
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
     const string LOGIN_URL = "https://jbus.herokuapp.com/user/login"; //로그인 요청을 보낼 url
+    const string FAIL_TO_LOGIN_ERROR_MSG = "로그인에 실패하였습니다. 아이디를 다시 확인해 주세요.";
     const int ROOM_MAX_PLAYER = 16;
     const int GAME_DOSE_NOT_EXIT_ERROR_CODE = 32758;
     const int GAME_FULL_ERROR_CODE = 32765;
@@ -51,18 +53,28 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         StartCoroutine(Login_REST());
     }
 
+    //로딩화면 출력
     void DisplayLoading()
     {
         NormalComponent.SetActive(false);
         LoadingComponent.SetActive(true);
     }
 
+    //일반 화면을 출력
     void DisplayNormal()
     {
         NormalComponent.SetActive(true);
         LoadingComponent.SetActive(false);
     }
 
+    //에러 메세지를 보여줌
+    void DisplayErrorMsg(string msg)
+    {
+        ErrorText.SetActive(true);
+        ErrorText.GetComponent<TMP_Text>().text = msg;
+    }
+
+    //REST를 보내 로그인 시도
     IEnumerator Login_REST()
     {
         WWWForm form = new WWWForm();
@@ -76,7 +88,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (www.result != UnityWebRequest.Result.Success)
             {
                 DisplayNormal();
-                //TODO: 로그인 실패 메세지 보여주기
+                DisplayErrorMsg(FAIL_TO_LOGIN_ERROR_MSG);
             }
             else
             {
