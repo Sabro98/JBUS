@@ -29,10 +29,36 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     string roomName;
 
+    List<TMP_InputField> inputList;
+
+
     private void Awake()
     {
         PlayerID = "";
         roomName = "";
+    }
+
+    private void Start()
+    {
+        //input field list 초기화
+        initInputList();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            OnLogin();
+        }
+    }
+
+    void initInputList()
+    {
+        inputList = new List<TMP_InputField>();
+        inputList.Add(IDInput);
+
+        //inputList[0].ActivateInputField();
+        inputList[0].Select();
     }
 
     //Join 버튼을 누르면 해당 scene를 불러와줌

@@ -14,17 +14,17 @@ public class JoinManager : MonoBehaviour
     [SerializeField] TMP_InputField IDInput, NickNameInput;
     [SerializeField] GameObject ErrorText, NormalComponent, LoadingComponent;
 
-    const string LOBBY_SCENE = "LOBBY";
-    const string JOIN_URL = "https://jbus.herokuapp.com/user/join";
-
     public string PlayerID { get; set; }
     public string PlayerModel { get; set; }
     public string PlayerNickName { get; set; }
 
+    const string LOBBY_SCENE = "LOBBY";
+    const string JOIN_URL = "https://jbus.herokuapp.com/user/join";
     const string FAIL_TO_JOIN_ERROR_MSG = "중복된 아이디가 존재합니다!";
 
+    List<TMP_InputField> inputList;
+    int currentFocusField;
     GameObject currentPrefab;
-
 
     private void Awake()
     {
@@ -34,6 +34,44 @@ public class JoinManager : MonoBehaviour
 
         //playerID 초기화
         PlayerID = "";
+    }
+
+    private void Start()
+    {
+        //tab으로 이동하기 위한 inputList 초기화
+        initInputList();
+    }
+
+    void initInputList()
+    {
+        inputList = new List<TMP_InputField>();
+
+        inputList.Add(IDInput);
+        inputList.Add(NickNameInput);
+
+        currentFocusField = 0;
+        inputList[currentFocusField].ActivateInputField();
+        inputList[currentFocusField].Select();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            OnJoin();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            //그냥 tab? or shift + tab?
+            int weight = (Input.GetKey(KeyCode.LeftShift) ? -1 : 1);
+            if (currentFocusField + weight == inputList.Count) return;
+            if (currentFocusField + weight == -1) return;
+
+            currentFocusField += weight;
+            //inputList[currentFocusField].ActivateInputField();
+            inputList[currentFocusField].Select();
+        }
     }
 
     void initDropdown()
@@ -99,7 +137,7 @@ public class JoinManager : MonoBehaviour
         changePrefab(selected);
     }
 
-    public void OnJoinBtn()
+    public void OnJoin()
     {
         PlayerID = IDInput.text;
         PlayerNickName = NickNameInput.text;
@@ -111,7 +149,7 @@ public class JoinManager : MonoBehaviour
         StartCoroutine(Join_REST());
     }
 
-    public void OnBackBtn()
+    public void OnBack()
     {
         SceneManager.LoadScene(LOBBY_SCENE);
     }
