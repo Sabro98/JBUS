@@ -19,11 +19,10 @@ public class JoinManager : MonoBehaviour
     public string PlayerNickName { get; set; }
 
     const string LOBBY_SCENE = "LOBBY";
-    const string JOIN_URL = "https://jbus.herokuapp.com/user/join";
     const string FAIL_TO_JOIN_ERROR_MSG = "중복된 아이디가 존재합니다!";
 
-    List<TMP_InputField> inputList;
     int currentFocusField;
+    List<TMP_InputField> inputList;
     GameObject currentPrefab;
 
     private void Awake()
@@ -146,7 +145,7 @@ public class JoinManager : MonoBehaviour
 
         //join player
         DisplayLoading();
-        StartCoroutine(Join_REST());
+        StartCoroutine(RestManager.JOIN_FUNC);
     }
 
     public void OnBack()
@@ -161,7 +160,7 @@ public class JoinManager : MonoBehaviour
         form.AddField("playerNickName", PlayerNickName);
         form.AddField("playerModel", PlayerModel);
 
-        using (UnityWebRequest www = UnityWebRequest.Post(JOIN_URL, form))
+        using (UnityWebRequest www = UnityWebRequest.Post(RestManager.JOIN_URL, form))
         {
             yield return www.SendWebRequest();
             if(www.result != UnityWebRequest.Result.Success)

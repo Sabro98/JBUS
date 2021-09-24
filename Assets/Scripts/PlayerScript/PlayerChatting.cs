@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using UnityEngine.Networking;
 
 public class PlayerChatting : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PlayerChatting : MonoBehaviour
     const int damp = 5; // chat bubble's damp
 
     public static bool IsChatting { get; set; }
-
+    
     CanvasManager canvasManager;
     GameObject chatInputObject;
     TMP_InputField chatField;
@@ -65,8 +66,10 @@ public class PlayerChatting : MonoBehaviour
 
                 if (msg != "")
                 {
-
                     chatBubbleTime = 3f;
+
+                    string[] parms = new string[3] { playerInfo.Player.playerID, msg, PhotonNetwork.CurrentRoom.Name };
+                    StartCoroutine(RestManager.CHAT_FUNC, parms);
 
                     //다른 세계의 자신에게도 채팅을 띄우도록
                     PV.RPC(UPDATE_CHAT_BUBBLE, RpcTarget.All, msg);
@@ -101,6 +104,25 @@ public class PlayerChatting : MonoBehaviour
                 chatField.Select();
                 chatInputObject.SetActive(false);
                 IsChatting = false;
+            }
+        }
+    }
+
+    IEnumerator SaveChat_REST(string[] parms)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("speaker", parms[0]);
+        form.AddField("contents", parms[1]);
+        form.AddField("location", parms[2]);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(RestManager.CHAT_URL, form))
+        {
+            yield return www.SendWebRequest();
+
+            //로그인에 실패함
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("ERROR!!!!");
             }
         }
     }

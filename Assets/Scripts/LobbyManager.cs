@@ -21,7 +21,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     const string GAME_SENCE = "Game";
     const string JOIN_SCENE = "Join";
-    const string LOGIN_URL = "https://jbus.herokuapp.com/user/login"; //로그인 요청을 보낼 url
     const string FAIL_TO_LOGIN_ERROR_MSG = "로그인에 실패하였습니다. 아이디를 다시 확인해 주세요.";
     const int ROOM_MAX_PLAYER = 16;
     const int GAME_DOSE_NOT_EXIT_ERROR_CODE = 32758;
@@ -76,7 +75,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         roomName = ChannelDropDown.options[ChannelDropDown.value].text;
 
         DisplayLoading();
-        StartCoroutine(Login_REST());
+        StartCoroutine(RestManager.LOGIN_FUNC);
     }
 
     //로딩화면 출력
@@ -106,7 +105,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         WWWForm form = new WWWForm();
         form.AddField("playerID", PlayerID);
 
-        using (UnityWebRequest www = UnityWebRequest.Post(LOGIN_URL, form))
+        using (UnityWebRequest www = UnityWebRequest.Post(RestManager.LOGIN_URL, form))
         {
             yield return www.SendWebRequest();
 
