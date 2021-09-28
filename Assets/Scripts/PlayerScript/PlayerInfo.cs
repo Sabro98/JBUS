@@ -44,17 +44,19 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     public void SetPlayerInfo(JBUS_Player player)
     {
         string nickname, model, id;
+        int group;
         nickname = player.playerNickName;
         model = player.playerModel;
         id = player.playerID;
+        group = player.playerGroup;
 
-        PV.RPC(SET_PLAYER_NAME, RpcTarget.All, nickname, model, id);
+        PV.RPC(SET_PLAYER_NAME, RpcTarget.All, nickname, model, id, group);
     }
 
     [PunRPC]
-    public void SetPlayerName_RPC(string nickname, string model, string id)
+    public void SetPlayerName_RPC(string nickname, string model, string id, int group)
     {
-        Player = new JBUS_Player(nickname, model, id);
+        Player = new JBUS_Player(nickname, model, id, group);
         playerIDText.text = Player.playerNickName;
     }
 
@@ -62,6 +64,6 @@ public class PlayerInfo : MonoBehaviourPunCallbacks
     {
         if (!PV.IsMine) return;
         base.OnPlayerEnteredRoom(newPlayer);
-        PV.RPC(SET_PLAYER_NAME, RpcTarget.All, Player.playerNickName, Player.playerModel, Player.playerID);
+        PV.RPC(SET_PLAYER_NAME, RpcTarget.All, Player.playerNickName, Player.playerModel, Player.playerID, Player.playerGroup);
     }
 }

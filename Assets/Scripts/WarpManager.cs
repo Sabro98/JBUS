@@ -8,7 +8,8 @@ using UnityEngine.Networking;
 public class WarpManager : MonoBehaviourPunCallbacks
 {
     public JBUS_Player warpPlayer { get; set; }
-    string to;
+    string m_to;
+    string SceneName;
     bool IsWarp;
 
     private void Awake()
@@ -20,11 +21,14 @@ public class WarpManager : MonoBehaviourPunCallbacks
     {
         DontDestroyOnLoad(this.gameObject);
         IsWarp = true;
+        //이동용 playerPrefab을 생성해서 해결할 필요가 있나 고려 -> 필요하다면 수정, 아니라면 유지 
         var playerInfo = player.GetComponent<PlayerInfo>();
         warpPlayer = playerInfo.Player;
-        this.to = to;
         SceneManager.LoadScene(JustLoadingScript.SceneName);
-        string[] parms = new string[3] { playerInfo.Player.playerID, from, to };
+
+        this.m_to = to + "--" + warpPlayer.playerGroup.ToString();
+        this.SceneName = to;
+        string[] parms = new string[3] { playerInfo.Player.playerID, from, m_to };
         StartCoroutine(RestManager.WARP_FUNC, parms);
     }
 
@@ -53,18 +57,18 @@ public class WarpManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         if (!IsWarp) return;
-        PhotonNetwork.JoinRoom(to);
+        PhotonNetwork.JoinRoom(m_to);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         if (!IsWarp) return;
-        PhotonNetwork.CreateRoom(to);
+        PhotonNetwork.CreateRoom(m_to);
     }
 
     public override void OnJoinedRoom()
     {
         if (!IsWarp) return;
-        PhotonNetwork.LoadLevel(to);
+        PhotonNetwork.LoadLevel(SceneName);
     }
 }

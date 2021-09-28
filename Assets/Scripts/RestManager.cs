@@ -3,8 +3,8 @@ using UnityEngine.Networking;
 
 public class RestManager
 {
-    //const string BASE_URL = "https://jbus.herokuapp.com/"; // on cloud
-    const string BASE_URL = "http://localhost:7000/";        // on local
+    const string BASE_URL = "https://jbus.herokuapp.com/"; // on cloud
+    //const string BASE_URL = "http://localhost:7000/";        // on local
     const string USER_ROUTER_URL = BASE_URL + "user/";
     const string CHAT_ROUTER_URL = BASE_URL + "chat/";
     const string WARP_ROUTER_URL = BASE_URL + "warp/";

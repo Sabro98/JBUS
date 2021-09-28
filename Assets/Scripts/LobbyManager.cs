@@ -120,6 +120,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 if (www.isDone)
                 {
                     string res = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    //플레이어 생성을 위한 prefab 만들어둠
                     var playerObj = Instantiate(Resources.Load("PlayerInfoObj")) as GameObject;
                     playerObj.GetComponent<ForPlayerSpawn>().SpawnPlayer = JBUS_Player.CreateFromJSON(res);
                     PhotonNetwork.JoinRoom(roomName);
