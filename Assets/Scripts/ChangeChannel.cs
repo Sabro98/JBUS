@@ -45,3 +45,6 @@ public class ChangeChannel : MonoBehaviourPunCallbacks
         //Destroy(this);
     }
 }
+
+//TODO: ChangeChannel 할 때 latestChannel 갱신 x
+//이걸 어떻게 해결? WarpManager와 ChangeChannel 둘 중 하나만 쓰는게 좋아보임.
