@@ -25,7 +25,7 @@ public class Building7Portal : MonoBehaviourPunCallbacks
         if (Input.GetKey(KeyCode.E))
         {   
             var manager = WarpManager.GetComponent<WarpManager>();
-            manager.Warp(player, targetScene);
+            manager.Warp(player, PhotonNetwork.CurrentRoom.Name, targetScene);
             IsPlayerEnter = false;
             //player.GetComponent<PlayerInfo>().DestroyPlayer();
             PhotonNetwork.Destroy(player.gameObject);
