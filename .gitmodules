@@ -1,0 +1,3 @@
+[submodule "JBUS-server"]
+	path = JBUS-server
+	url = https://github.com/Sabro98/JBUS-server
