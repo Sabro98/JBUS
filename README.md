@@ -1,5 +1,5 @@
 # JBUS
-JBNU Meta-Bus 프로젝트 입니다.
+JBNU MetaVerse 프로젝트 입니다.
 
 ###### unity networking + backend - [최인혁](https://github.com/Sabro98)
 ###### modeling - [민성환](https://github.com/minshxxx)
